@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = ["day1"]
+
+[workspace.lints.clippy]
+todo = "warn"
+unimplemented = "warn"
+dbg_macro = "warn"
+unwrap_used = "warn"
+expect_used = "warn"
