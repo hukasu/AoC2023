@@ -24,53 +24,28 @@ fn main() -> Result<(), String> {
 }
 
 fn part_numbers_sum(input: &str) -> Result<u32, String> {
-    match input.chars().position(|c| c == '\n') {
-        Some(chars_per_line) => {
-            let all_dots = String::from_iter(".".chars().cycle().take(chars_per_line));
-            let lines = [all_dots.as_str()]
-                .into_iter()
-                .chain(input.split_whitespace())
-                .chain([all_dots.as_str()])
-                .collect::<Vec<_>>();
-            lines
-                .windows(3)
-                .try_fold(vec![], |mut parts: Vec<u32>, cur| {
-                    if let [top, mid, bottom] = cur {
-                        let mut accum = 0;
-                        let mut waiting = false;
-                        for ((a, b), c) in top.chars().zip(mid.chars()).zip(bottom.chars()) {
-                            if let Some(digit) = b.to_digit(10) {
-                                accum = accum * 10 + digit;
-                            } else {
-                                if accum != 0 && (waiting || a != '.' || b != '.' || c != '.') {
-                                    parts.push(accum);
-                                }
-                                accum = 0;
-                            }
-
-                            if waiting && a == '.' && b == '.' && c == '.' {
-                                waiting = false;
-                            } else if !waiting
-                                && (a != '.' || (b != '.' && !b.is_ascii_digit()) || c != '.')
-                            {
-                                waiting = true;
-                            }
-                        }
-                        if accum != 0 && waiting {
-                            parts.push(accum);
-                        }
-                        Ok(parts)
-                    } else {
-                        Err("Windows did not have 3 parts.".to_owned())
-                    }
-                })
-                .map(|parts| parts.into_iter().sum())
-        }
-        None => Err("Input had no lines.".to_owned()),
-    }
+    let should_process = |digit: u8| -> bool { !digit.is_ascii_digit() && digit != b'.' };
+    let processor = |found_parts: &[u32], accumulator: &mut Vec<u32>| {
+        accumulator.push(found_parts.iter().sum());
+    };
+    parts_finder(input, &should_process, &processor)
 }
 
 fn gear_ratio_sum(input: &str) -> Result<u32, String> {
+    let should_process = |digit: u8| -> bool { digit == b'*' };
+    let processor = |found_parts: &[u32], accumulator: &mut Vec<u32>| {
+        if found_parts.len() == 2 {
+            accumulator.push(found_parts.iter().product());
+        }
+    };
+    parts_finder(input, &should_process, &processor)
+}
+
+fn parts_finder(
+    input: &str,
+    should_process: &dyn Fn(u8) -> bool,
+    symbol_processor: &dyn Fn(&[u32], &mut Vec<u32>),
+) -> Result<u32, String> {
     let line_to_gears = |window: &[u8]| -> Option<u32> {
         if window.len() > 1 && (window[1] < b'0' || window[1] > b'9') {
             None
@@ -134,38 +109,36 @@ fn gear_ratio_sum(input: &str) -> Result<u32, String> {
                 .collect::<Vec<_>>();
             lines
                 .windows(3)
-                .try_fold(vec![], |mut gear_ratios: Vec<u32>, cur| {
+                .try_fold(vec![], |mut parts: Vec<u32>, cur| {
                     if let [top, mid, bottom] = cur {
                         // Possible because input does not have '*' close to the start or end of the lines
                         for ((a, b), c) in top.windows(7).zip(mid.windows(7)).zip(bottom.windows(7))
                         {
-                            if b[3] == b'*' {
-                                let mut gears = vec![];
+                            if should_process(b[3]) {
+                                let mut adjacent_parts = vec![];
                                 // Top line tests
                                 if a[3].is_ascii_digit() {
-                                    adjacent(&mut gears, a)?;
+                                    adjacent(&mut adjacent_parts, a)?;
                                 } else {
-                                    left_diagonal(&mut gears, a)?;
-                                    right_diagonal(&mut gears, a)?;
+                                    left_diagonal(&mut adjacent_parts, a)?;
+                                    right_diagonal(&mut adjacent_parts, a)?;
                                 }
                                 // Mid line tests
-                                left_diagonal(&mut gears, b)?;
-                                right_diagonal(&mut gears, b)?;
+                                left_diagonal(&mut adjacent_parts, b)?;
+                                right_diagonal(&mut adjacent_parts, b)?;
                                 // Bottom line tests
                                 if c[3].is_ascii_digit() {
-                                    adjacent(&mut gears, c)?;
+                                    adjacent(&mut adjacent_parts, c)?;
                                 } else {
-                                    left_diagonal(&mut gears, c)?;
-                                    right_diagonal(&mut gears, c)?;
+                                    left_diagonal(&mut adjacent_parts, c)?;
+                                    right_diagonal(&mut adjacent_parts, c)?;
                                 }
 
-                                if gears.len() == 2 {
-                                    gear_ratios.push(gears.into_iter().product())
-                                }
+                                symbol_processor(&adjacent_parts, &mut parts);
                             }
                         }
 
-                        Ok(gear_ratios)
+                        Ok(parts)
                     } else {
                         Err("Windows did not have 3 parts.".to_owned())
                     }
