@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["day1", "day2", "day3"]
+members = ["day1", "day2", "day3", "day4"]
 
 [workspace.lints.clippy]
 todo = "warn"
