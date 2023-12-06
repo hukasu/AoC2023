@@ -1,38 +1,29 @@
 use std::io::Read;
 
-fn main() {
-    let timer = std::time::Instant::now();
-    let day1 = {
-        match std::fs::File::open("inputs/day1_part1.txt") {
-            Ok(mut file) => {
-                let mut input = String::new();
-                match file.read_to_string(&mut input) {
-                    Ok(_) => get_calibration_value(&input, &filter_calibration_value_from_line),
-                    Err(err) => Err(err),
-                }
-            }
-            Err(err) => Err(err),
-        }
-    };
-    println!("{:?}: {day1:?}", timer.elapsed());
+fn main() -> Result<(), String> {
+    match std::fs::File::open("inputs/day01_part1.txt") {
+        Ok(mut file) => {
+            let mut input = String::new();
+            match file.read_to_string(&mut input) {
+                Ok(_) => {
+                    let timer = std::time::Instant::now();
+                    let part1 = get_calibration_value(&input, &filter_calibration_value_from_line);
+                    println!("{:?}: {part1:?}", timer.elapsed());
 
-    let timer = std::time::Instant::now();
-    let day2 = {
-        match std::fs::File::open("inputs/day1_part1.txt") {
-            Ok(mut file) => {
-                let mut input = String::new();
-                match file.read_to_string(&mut input) {
-                    Ok(_) => get_calibration_value(
+                    let timer = std::time::Instant::now();
+                    let part2 = get_calibration_value(
                         &input,
                         &filter_calibration_value_from_line_from_string,
-                    ),
-                    Err(err) => Err(err),
+                    );
+                    println!("{:?}: {part2:?}", timer.elapsed());
+
+                    Ok(())
                 }
+                Err(err) => Err(err.to_string()),
             }
-            Err(err) => Err(err),
         }
-    };
-    println!("{:?}: {day2:?}", timer.elapsed());
+        Err(err) => Err(err.to_string()),
+    }
 }
 
 fn get_calibration_value(

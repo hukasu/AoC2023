@@ -34,7 +34,7 @@ const GAME_CUTOFF: Game = Game {
 };
 
 fn main() -> Result<(), String> {
-    match std::fs::File::open("inputs/day2_part1.txt") {
+    match std::fs::File::open("inputs/day02_part1.txt") {
         Ok(mut file) => {
             let mut input = String::new();
             match file.read_to_string(&mut input) {

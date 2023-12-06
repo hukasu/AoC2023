@@ -1,7 +1,7 @@
 use std::io::Read;
 
 fn main() -> Result<(), String> {
-    match std::fs::File::open("inputs/day3_part1.txt") {
+    match std::fs::File::open("inputs/day03_part1.txt") {
         Ok(mut file) => {
             let mut input = String::new();
             match file.read_to_string(&mut input) {

@@ -3,7 +3,7 @@ mod mapper;
 use std::io::Read;
 
 fn main() -> Result<(), String> {
-    match std::fs::File::open("inputs/day5_part1.txt") {
+    match std::fs::File::open("inputs/day05_part1.txt") {
         Ok(mut file) => {
             let mut input = String::new();
             match file.read_to_string(&mut input) {
