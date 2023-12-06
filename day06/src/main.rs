@@ -1,4 +1,4 @@
-use std::{io::Read, num::TryFromIntError};
+use std::io::Read;
 
 fn main() -> Result<(), String> {
     match std::fs::File::open("inputs/day06_part1.txt") {
@@ -61,20 +61,19 @@ fn ways_to_beat_race_records(input: &str, single_race: bool) -> Result<u64, Stri
         }
     };
 
-    race_duration
+    Ok(race_duration
         .into_iter()
         .zip(race_record)
-        .map(|(dur, rec)| {
-            u64::try_from(
-                (0..dur)
-                    .filter(|boat_charge| (boat_charge * (dur - *boat_charge)) > rec)
-                    .count(),
-            )
+        .map(|(race_duration, race_record)| {
+            if let Some(first_win) = (0..race_duration)
+                .find(|boat_charge| (boat_charge * (race_duration - boat_charge)) > race_record)
+            {
+                race_duration - (first_win * 2) + 1
+            } else {
+                0
+            }
         })
-        .try_fold(1u64, |prod, cur| -> Result<u64, TryFromIntError> {
-            Ok(prod * cur?)
-        })
-        .map_err(|err| format!("Failed to get product of way to break race records. '{err}'"))
+        .product())
 }
 
 #[cfg(test)]
