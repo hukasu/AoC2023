@@ -151,14 +151,14 @@ fn follow_ghost_map(input: &str) -> Result<u64, String> {
     for prime in PRIMES {
         while !&cycles.iter().all(|i| i.eq(&1)) {
             let mut divided_any = false;
-            for c in cycles.iter_mut() {
+            for c in &mut cycles {
                 if *c % prime == 0 {
                     *c /= prime;
                     divided_any = true;
                 }
             }
             if divided_any {
-                factors.push(prime)
+                factors.push(prime);
             } else {
                 break;
             }

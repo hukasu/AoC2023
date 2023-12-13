@@ -28,32 +28,32 @@ fn main() -> Result<(), String> {
 
 fn get_calibration_value(
     calibration_file: &str,
-    f: &dyn Fn(&str) -> Result<u32, std::io::Error>,
-) -> Result<u32, std::io::Error> {
+    f: &dyn Fn(&str) -> Result<u32, String>,
+) -> Result<u32, String> {
     calibration_file.lines().map(f).sum()
 }
 
-fn filter_calibration_value_from_line(line: &str) -> Result<u32, std::io::Error> {
+fn filter_calibration_value_from_line(line: &str) -> Result<u32, String> {
     let digits = line
         .chars()
         .filter_map(|c| c.to_digit(10))
         .collect::<Vec<_>>();
     match (digits.first(), digits.last()) {
         (Some(l), Some(r)) => Ok(l * 10 + r),
-        _ => Err(std::io::Error::new(
-            std::io::ErrorKind::InvalidData,
-            "Failed to extract digits from line.",
-        )),
+        _ => Err("Failed to extract digits from line.".to_owned()),
     }
 }
 
-fn filter_calibration_value_from_line_from_string(line: &str) -> Result<u32, std::io::Error> {
+fn filter_calibration_value_from_line_from_string(line: &str) -> Result<u32, String> {
     const STRING_TO_DIGIT: [&str; 10] = [
         "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];
-    let digits = std::iter::successors(Some(line), |slice: &&str| match slice.is_empty() {
-        true => None,
-        false => Some(&slice[1..]),
+    let digits = std::iter::successors(Some(line), |slice: &&str| {
+        if slice.is_empty() {
+            None
+        } else {
+            Some(&slice[1..])
+        }
     })
     .map(|slice| match slice {
         s if s.len() > 5 => &slice[..5],
@@ -63,22 +63,20 @@ fn filter_calibration_value_from_line_from_string(line: &str) -> Result<u32, std
     .filter_map(|(slice, c)| {
         let digit = c.to_digit(10);
         if digit.is_some() {
-            digit
+            digit.map(Ok)
         } else {
             STRING_TO_DIGIT
                 .iter()
                 .enumerate()
                 .find(|(_, number)| slice.starts_with(*number))
-                .map(|(i, _)| i as u32)
+                .map(|(i, _)| u32::try_from(i))
         }
     })
-    .collect::<Vec<_>>();
+    .collect::<Result<Vec<_>, std::num::TryFromIntError>>()
+    .map_err(|err| format!("Failed to find calibration value. '{err}'"))?;
     match (digits.first(), digits.last()) {
         (Some(l), Some(r)) => Ok(l * 10 + r),
-        _ => Err(std::io::Error::new(
-            std::io::ErrorKind::InvalidData,
-            "Failed to extract digits from line.",
-        )),
+        _ => Err("Failed to extract digits from line.".to_owned()),
     }
 }
 
@@ -104,14 +102,14 @@ zoneight234
 7pqrstsixteen"#;
 
     #[test]
-    fn part1() -> Result<(), std::io::Error> {
+    fn part1() -> Result<(), String> {
         let day1 = get_calibration_value(PART1_INPUT, &filter_calibration_value_from_line)?;
         assert_eq!(day1, 142);
         Ok(())
     }
 
     #[test]
-    fn part2() -> Result<(), std::io::Error> {
+    fn part2() -> Result<(), String> {
         let day2 =
             get_calibration_value(PART2_INPUT, &filter_calibration_value_from_line_from_string)?;
         assert_eq!(day2, 281);

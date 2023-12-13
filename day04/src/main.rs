@@ -8,11 +8,14 @@ struct Card {
 }
 
 impl Card {
-    fn count_winning_numbers(&self) -> u32 {
-        self.card_numbers
-            .iter()
-            .filter(|number| self.winning_numbers.contains(number))
-            .count() as u32
+    fn count_winning_numbers(&self) -> Result<u32, String> {
+        u32::try_from(
+            self.card_numbers
+                .iter()
+                .filter(|number| self.winning_numbers.contains(number))
+                .count(),
+        )
+        .map_err(|err| format!("Failed to count winning cards. '{err}'"))
     }
 }
 
@@ -45,7 +48,7 @@ fn card_pile_worth(input: &str) -> Result<u32, String> {
 
 fn card_worth(card: &str) -> Result<u32, String> {
     let card = read_card(card)?;
-    Ok(2u32.pow(card.count_winning_numbers()) / 2)
+    Ok(2u32.pow(card.count_winning_numbers()?) / 2)
 }
 
 fn count_card_pile(input: &str) -> Result<u32, String> {
@@ -57,7 +60,7 @@ fn count_card_pile(input: &str) -> Result<u32, String> {
 
     for card in cards {
         let copies_of_cur_card = card_count[card.id - 1];
-        let winning_count = card.count_winning_numbers() as usize;
+        let winning_count = card.count_winning_numbers()? as usize;
         card_count[card.id..(card.id + winning_count)]
             .iter_mut()
             .for_each(|cur| *cur += copies_of_cur_card);

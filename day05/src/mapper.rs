@@ -2,6 +2,7 @@ use std::{ops::Range, str::Lines};
 
 type MappingSection = Vec<(Range<u64>, Range<u64>)>;
 
+#[allow(clippy::module_name_repetitions)]
 #[derive(Debug)]
 pub struct SeedMapper {
     seeds: Vec<u64>,
@@ -125,7 +126,7 @@ impl SeedMapper {
             }
             let ranges_start_and_len = line
                 .split_whitespace()
-                .map(|s| s.parse::<u64>())
+                .map(str::parse::<u64>)
                 .collect::<Result<Vec<u64>, _>>()
                 .map_err(|err| format!("Failed to read ranges start and len. '{err}'"))?;
             match ranges_start_and_len.as_slice() {
@@ -165,7 +166,7 @@ impl TryFrom<&str> for SeedMapper {
 
         let spacing = lines.next().ok_or("Input only had one line.")?;
         if !spacing.is_empty() {
-            Err("There was no spacing between 'seeds' and 'seed-to-soil' sections.")?
+            Err("There was no spacing between 'seeds' and 'seed-to-soil' sections.")?;
         }
 
         let seed_to_soil = Self::read_almanac_section("seed-to-soil map:", &mut lines)?;

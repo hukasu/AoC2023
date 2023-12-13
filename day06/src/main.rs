@@ -28,7 +28,7 @@ fn ways_to_beat_race_records(input: &str, single_race: bool) -> Result<u64, Stri
         input
             .split_whitespace()
             .skip(1)
-            .map(|time| time.parse::<u64>())
+            .map(str::parse::<u64>)
             .collect::<Result<Vec<u64>, _>>()
             .map_err(|err| format!("Failed to parse races information. '{err}'"))
     };

@@ -1,6 +1,6 @@
 mod camel_card;
 
-use std::io::Read;
+use std::{io::Read, num::TryFromIntError};
 
 use camel_card::{CamelCardHand, JokerCamelCardHand};
 
@@ -42,11 +42,12 @@ fn calculate_game_winnings<'a, T: Ord + From<&'a str>>(input: &'a str) -> Result
         })
         .collect::<Result<Vec<_>, _>>()?;
     hands.sort_by(|(lhs, _), (rhs, _)| lhs.cmp(rhs));
-    Ok(hands
+    hands
         .into_iter()
         .enumerate()
-        .map(|(i, (_, bid))| (i + 1) as u32 * bid)
-        .sum())
+        .map(|(i, (_, bid))| u32::try_from(i + 1).map(|i| i * bid))
+        .sum::<Result<u32, TryFromIntError>>()
+        .map_err(|err| format!("Failed to calculate hands payouts. '{err}'"))
 }
 
 #[cfg(test)]

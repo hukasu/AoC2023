@@ -41,6 +41,7 @@ fn gear_ratio_sum(input: &str) -> Result<u32, String> {
     parts_finder(input, &should_process, &processor)
 }
 
+#[allow(clippy::too_many_lines)]
 fn parts_finder(
     input: &str,
     should_process: &dyn Fn(u8) -> bool,
@@ -54,7 +55,7 @@ fn parts_finder(
         } else {
             Some(slice.iter().fold(0u32, |accum, d| {
                 if d.is_ascii_digit() {
-                    accum * 10 + d.clamp(&b'0', &b'9').saturating_sub(b'0') as u32
+                    accum * 10 + u32::from(d.clamp(&b'0', &b'9').saturating_sub(b'0'))
                 } else {
                     accum
                 }
@@ -89,7 +90,7 @@ fn parts_finder(
                 if let Some(left) = search_part_number_in_slice(sub_slice) {
                     gears.push(left);
                 } else {
-                    Err("Failed to get gear number where there should be one.")?
+                    Err("Failed to get gear number where there should be one.")?;
                 }
             };
 
@@ -109,7 +110,7 @@ fn parts_finder(
                 if let Some(right) = search_part_number_in_slice(sub_slice) {
                     gears.push(right);
                 } else {
-                    Err("Failed to get gear number where there should be one.")?
+                    Err("Failed to get gear number where there should be one.")?;
                 }
             };
 
@@ -119,13 +120,13 @@ fn parts_finder(
     match input.chars().position(|c| c == '\n') {
         Some(chars_per_line) => {
             // "Empty" line with the same length as the lines from the input
-            let all_dots = String::from_iter(".".chars().cycle().take(chars_per_line));
+            let all_dots = ".".chars().cycle().take(chars_per_line).collect::<String>();
             // List of lines with "empty" line padding at the beginning and end
             let lines_with_padding = [all_dots.as_str()]
                 .into_iter()
                 .chain(input.split_whitespace())
                 .chain([all_dots.as_str()])
-                .map(|s| s.as_bytes())
+                .map(str::as_bytes)
                 .collect::<Vec<_>>();
 
             lines_with_padding

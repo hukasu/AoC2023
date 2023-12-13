@@ -246,6 +246,7 @@ fn breadth_update(
     Ok(())
 }
 
+#[allow(clippy::too_many_lines)]
 fn mark_all_outside(
     start: &(usize, usize),
     line_length: usize,
@@ -259,6 +260,7 @@ fn mark_all_outside(
         let cur_tile = pipes[node.1][node.0];
         let cur_tile_state = map[node.1 * line_length + node.0];
 
+        #[allow(clippy::match_same_arms)]
         let dirs = match (cur_tile, cur_tile_state) {
             (b'S', _) => vec![],
             (b'.', Loop::Outside) => vec!['U', 'D', 'L', 'R'],
@@ -282,11 +284,12 @@ fn mark_all_outside(
             (b'J', Loop::SEPipeInner) => vec!['U', 'L'],
             (a, b) => Err(format!(
                 "Incorrect types. ({:?}, {b:?})",
-                char::from_u32(a as u32)
+                char::from_u32(u32::from(a))
             ))?,
         };
 
         for dir in dirs {
+            #[allow(clippy::match_same_arms)]
             if match (dir, node) {
                 ('U', (_, 0)) => true,
                 ('D', (_, y)) if y + 1 == pipes.len() => true,
@@ -331,17 +334,20 @@ fn mark_all_outside(
 
             let dir_tile = match dir_tile {
                 b'S' => {
+                    #[allow(clippy::match_same_arms)]
                     match (
-                        (dir_node.1 != 0).then_some(()).and_then(|_| {
+                        (dir_node.1 != 0).then_some(()).and_then(|()| {
                             pipes
                                 .get(dir_node.1 - 1)
                                 .and_then(|line| line.get(dir_node.0))
                         }),
-                        (dir_node.1 + 1 != pipes.len()).then_some(()).and_then(|_| {
-                            pipes
-                                .get(dir_node.1 + 1)
-                                .and_then(|line| line.get(dir_node.0))
-                        }),
+                        (dir_node.1 + 1 != pipes.len())
+                            .then_some(())
+                            .and_then(|()| {
+                                pipes
+                                    .get(dir_node.1 + 1)
+                                    .and_then(|line| line.get(dir_node.0))
+                            }),
                         pipes
                             .get(dir_node.1)
                             .filter(|_| dir_node.0 != 0)
@@ -357,14 +363,13 @@ fn mark_all_outside(
                         (_, Some(b'|' | b'L' | b'J'), Some(b'-' | b'F' | b'L'), _) => b'7',
                         (_, Some(b'|' | b'L' | b'J'), _, Some(b'-' | b'7' | b'J')) => b'F',
                         (_, _, Some(b'-' | b'F' | b'L'), Some(b'-' | b'7' | b'J')) => b'-',
-                        surroundings => {
-                            Err(format!("Could not determinate S. {:?}", surroundings))?
-                        }
+                        surroundings => Err(format!("Could not determinate S. {surroundings:?}"))?,
                     }
                 }
                 else_ => else_,
             };
 
+            #[allow(clippy::match_same_arms)]
             match (dir, cur_tile, cur_tile_state, dir_tile, is_in_loop) {
                 // Going to a tile that is not part of the loop always flags as Outside
                 ('U' | 'D' | 'L' | 'R', _, _, _, false) => {
