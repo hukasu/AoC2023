@@ -53,15 +53,6 @@ fn lenses_focusing_power(input: &str) -> Result<u64, String> {
         .lines()
         .flat_map(|line| line.split(','))
         .collect::<Vec<_>>();
-    // let hashes = instructions
-    //     .iter()
-    //     .copied()
-    //     .map(hash)
-    //     .map(|res| {
-    //         res.map(usize::from)
-    //             .map_err(|err| format!("Hash failed with '{err}'."))
-    //     })
-    //     .collect::<Result<Vec<usize>, String>>()?;
 
     let mut boxes = vec![LensBox(vec![]); 256];
 
