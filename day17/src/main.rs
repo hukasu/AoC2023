@@ -91,11 +91,6 @@ fn path_of_least_heat_loss(input: &str, using_mega_crucible: bool) -> Result<u64
         }
     }
 
-    // cum_heat_loss_map.iter().for_each(|grid| {
-    //     grid.iter().for_each(|line| println!("{line:?}"));
-    //     println!();
-    // });
-
     cum_heat_loss_map
         .iter()
         .filter_map(|end| end.last().and_then(|last_row| last_row.last()).copied())
