@@ -185,7 +185,7 @@ fn get_move_heat_loss(
 mod tests {
     use super::*;
 
-    const PART1_INPUT: &str = r#"2413432311323
+    const PART1_INPUT: &str = r"2413432311323
 3215453535623
 3255245654254
 3446585845452
@@ -197,7 +197,7 @@ mod tests {
 4564679986453
 1224686865563
 2546548887735
-4322674655533"#;
+4322674655533";
 
     #[test]
     fn part1_test() {

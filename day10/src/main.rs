@@ -715,19 +715,19 @@ fn mark_all_outside(
 mod tests {
     use super::*;
 
-    const PART1_INPUT1: &str = r#".....
+    const PART1_INPUT1: &str = r".....
 .S-7.
 .|.|.
 .L-J.
-....."#;
+.....";
 
-    const PART1_INPUT2: &str = r#"7-F7-
+    const PART1_INPUT2: &str = r"7-F7-
 .FJ|7
 SJLL7
 |F--J
-LJ.LJ"#;
+LJ.LJ";
 
-    const PART2_INPUT1: &str = r#"...........
+    const PART2_INPUT1: &str = r"...........
 .S-------7.
 .|F-----7|.
 .||.....||.
@@ -735,9 +735,9 @@ LJ.LJ"#;
 .|L-7.F-J|.
 .|..|.|..|.
 .L--J.L--J.
-..........."#;
+...........";
 
-    const PART2_INPUT2: &str = r#"..........
+    const PART2_INPUT2: &str = r"..........
 .S------7.
 .|F----7|.
 .||....||.
@@ -745,9 +745,9 @@ LJ.LJ"#;
 .|L-7F-J|.
 .|..||..|.
 .L--JL--J.
-.........."#;
+..........";
 
-    const PART2_INPUT3: &str = r#".F----7F7F7F7F-7....
+    const PART2_INPUT3: &str = r".F----7F7F7F7F-7....
 .|F--7||||||||FJ....
 .||.FJ||||||||L7....
 FJL7L7LJLJ||LJ.L-7..
@@ -756,9 +756,9 @@ L--J.L7...LJS7F-7L7.
 ....L7.F7||L7|.L7L7|
 .....|FJLJ|FJ|F7|.LJ
 ....FJL-7.||.||||...
-....L---J.LJ.LJLJ..."#;
+....L---J.LJ.LJLJ...";
 
-    const PART2_INPUT4: &str = r#"FF7FSF7F7F7F7F7F---7
+    const PART2_INPUT4: &str = r"FF7FSF7F7F7F7F7F---7
 L|LJ||||||||||||F--J
 FL-7LJLJ||||||LJL-77
 F--JF--7||LJLJ7F7FJ-
@@ -767,7 +767,7 @@ L---JF-JLJ.||-FJLJJ7
 |FFJF7L7F-JF7|JL---7
 7-L-JL7||F7|L7F-7F7|
 L.L7LFJ|||||FJL7||LJ
-L7JLJL-JLJLJL--JLJ.L"#;
+L7JLJL-JLJLJL--JLJ.L";
 
     #[test]
     fn part1_test() {

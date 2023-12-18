@@ -54,11 +54,11 @@ fn calculate_game_winnings<'a, T: Ord + From<&'a str>>(input: &'a str) -> Result
 mod tests {
     use crate::camel_card::{CamelCardHand, JokerCamelCardHand};
 
-    const PART1_INPUT: &str = r#"32T3K 765
+    const PART1_INPUT: &str = r"32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483"#;
+QQQJA 483";
 
     #[test]
     fn part1_test() {

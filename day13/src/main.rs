@@ -101,7 +101,7 @@ fn find_horizontal_reflection(
 mod tests {
     use super::*;
 
-    const PART1_INPUT: &str = r#"#.##..##.
+    const PART1_INPUT: &str = r"#.##..##.
 ..#.##.#.
 ##......#
 ##......#
@@ -115,7 +115,7 @@ mod tests {
 #####.##.
 #####.##.
 ..##..###
-#....#..#"#;
+#....#..#";
 
     #[test]
     fn part1_test() {

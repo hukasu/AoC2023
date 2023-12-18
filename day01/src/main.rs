@@ -88,18 +88,18 @@ mod test {
         filter_calibration_value_from_line, filter_calibration_value_from_line_from_string,
     };
 
-    const PART1_INPUT: &str = r#"1abc2
+    const PART1_INPUT: &str = r"1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
-treb7uchet"#;
+treb7uchet";
 
-    const PART2_INPUT: &str = r#"two1nine
+    const PART2_INPUT: &str = r"two1nine
 eightwothree
 abcone2threexyz
 xtwone3four
 4nineeightseven2
 zoneight234
-7pqrstsixteen"#;
+7pqrstsixteen";
 
     #[test]
     fn part1() -> Result<(), String> {

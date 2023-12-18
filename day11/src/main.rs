@@ -112,7 +112,7 @@ fn get_expanded_column_rows(input: &str) -> Result<(Vec<usize>, Vec<usize>), Str
 mod tests {
     use super::*;
 
-    const PART1_INPUT1: &str = r#"...#......
+    const PART1_INPUT1: &str = r"...#......
 .......#..
 #.........
 ..........
@@ -121,7 +121,7 @@ mod tests {
 .........#
 ..........
 .......#..
-#...#....."#;
+#...#.....";
 
     #[test]
     fn part1_test() {

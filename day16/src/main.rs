@@ -272,7 +272,7 @@ fn next_obstacle_west(ray_position: (usize, usize), lines: &[&[u8]]) -> (usize, 
 mod tests {
     use super::*;
 
-    const PART1_INPUT: &str = r#".|...\....
+    const PART1_INPUT: &str = r".|...\....
 |.-.\.....
 .....|-...
 ........|.
@@ -281,7 +281,7 @@ mod tests {
 ..../.\\..
 .-.-/..|..
 .|....-|.\
-..//.|...."#;
+..//.|....";
 
     #[test]
     fn part1_test() {

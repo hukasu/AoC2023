@@ -198,7 +198,7 @@ fn parts_finder(
 
 #[cfg(test)]
 mod test {
-    const PART1_INPUT: &str = r#"467..114..
+    const PART1_INPUT: &str = r"467..114..
 ...*......
 ..35..633.
 ......#...
@@ -207,15 +207,15 @@ mod test {
 ..592.....
 ......755.
 ...$.*....
-.664.598.."#;
+.664.598..";
 
     #[test]
     fn part1_test() {
-        assert_eq!(super::part_numbers_sum(PART1_INPUT), Ok(4361))
+        assert_eq!(super::part_numbers_sum(PART1_INPUT), Ok(4361));
     }
 
     #[test]
     fn part2_test() {
-        assert_eq!(super::gear_ratio_sum(PART1_INPUT), Ok(467835))
+        assert_eq!(super::gear_ratio_sum(PART1_INPUT), Ok(467_835));
     }
 }

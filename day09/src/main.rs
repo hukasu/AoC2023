@@ -90,9 +90,9 @@ fn process_history(line: &str) -> Result<Vec<i64>, String> {
 
 #[cfg(test)]
 mod tests {
-    const PART1_INPUT1: &str = r#"0 3 6 9 12 15
+    const PART1_INPUT1: &str = r"0 3 6 9 12 15
 1 3 6 10 15 21
-10 13 16 21 30 45"#;
+10 13 16 21 30 45";
 
     #[test]
     fn part1_test() {

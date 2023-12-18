@@ -32,7 +32,7 @@ fn get_lowest_seed_location(input: &str, seed_ranges: bool) -> Result<u64, Strin
 
 #[cfg(test)]
 mod test {
-    const PART1_INPUT: &str = r#"seeds: 79 14 55 13
+    const PART1_INPUT: &str = r"seeds: 79 14 55 13
 
 seed-to-soil map:
 50 98 2
@@ -64,15 +64,15 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4"#;
+56 93 4";
 
     #[test]
     fn part1_test() {
-        assert_eq!(super::get_lowest_seed_location(PART1_INPUT, false), Ok(35))
+        assert_eq!(super::get_lowest_seed_location(PART1_INPUT, false), Ok(35));
     }
 
     #[test]
     fn part2_test() {
-        assert_eq!(super::get_lowest_seed_location(PART1_INPUT, true), Ok(46))
+        assert_eq!(super::get_lowest_seed_location(PART1_INPUT, true), Ok(46));
     }
 }

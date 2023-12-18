@@ -169,7 +169,7 @@ fn follow_ghost_map(input: &str) -> Result<u64, String> {
 
 #[cfg(test)]
 mod tests {
-    const PART1_INPUT1: &str = r#"RL
+    const PART1_INPUT1: &str = r"RL
 
 AAA = (BBB, CCC)
 BBB = (DDD, EEE)
@@ -177,15 +177,15 @@ CCC = (ZZZ, GGG)
 DDD = (DDD, DDD)
 EEE = (EEE, EEE)
 GGG = (GGG, GGG)
-ZZZ = (ZZZ, ZZZ)"#;
+ZZZ = (ZZZ, ZZZ)";
 
-    const PART1_INPUT2: &str = r#"LLR
+    const PART1_INPUT2: &str = r"LLR
 
 AAA = (BBB, BBB)
 BBB = (AAA, ZZZ)
-ZZZ = (ZZZ, ZZZ)"#;
+ZZZ = (ZZZ, ZZZ)";
 
-    const PART2_INPUT1: &str = r#"LR
+    const PART2_INPUT1: &str = r"LR
 
 11A = (11B, XXX)
 11B = (XXX, 11Z)
@@ -194,7 +194,7 @@ ZZZ = (ZZZ, ZZZ)"#;
 22B = (22C, 22C)
 22C = (22Z, 22Z)
 22Z = (22B, 22B)
-XXX = (XXX, XXX)"#;
+XXX = (XXX, XXX)";
 
     #[test]
     fn part1_test() {

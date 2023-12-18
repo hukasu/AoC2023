@@ -228,7 +228,7 @@ mod tests {
 
     use super::*;
 
-    const PART1_INPUT: &str = r#"O....#....
+    const PART1_INPUT: &str = r"O....#....
 O.OO#....#
 .....##...
 OO.#O....O
@@ -237,9 +237,9 @@ O.#..O.#.#
 ..O..#O..O
 .......O..
 #....###..
-#OO..#...."#;
+#OO..#....";
 
-    const PART1_INPUT_ROLLED: &str = r#"OOOO.#.O..
+    const PART1_INPUT_ROLLED: &str = r"OOOO.#.O..
 OO..#....#
 OO..O##..O
 O..#.OO...
@@ -248,9 +248,9 @@ O..#.OO...
 ..O..#.O.O
 ..O.......
 #....###..
-#....#...."#;
+#....#....";
 
-    const PART1_INPUT_CYCLE1: &str = r#".....#....
+    const PART1_INPUT_CYCLE1: &str = r".....#....
 ....#...O#
 ...OO##...
 .OO#......
@@ -259,9 +259,9 @@ O..#.OO...
 ....O#....
 ......OOOO
 #...O###..
-#..OO#...."#;
+#..OO#....";
 
-    const PART1_INPUT_CYCLE2: &str = r#".....#....
+    const PART1_INPUT_CYCLE2: &str = r".....#....
 ....#...O#
 .....##...
 ..O#......
@@ -270,9 +270,9 @@ O..#.OO...
 ....O#...O
 .......OOO
 #..OO###..
-#.OOO#...O"#;
+#.OOO#...O";
 
-    const PART1_INPUT_CYCLE3: &str = r#".....#....
+    const PART1_INPUT_CYCLE3: &str = r".....#....
 ....#...O#
 .....##...
 ..O#......
@@ -281,10 +281,10 @@ O..#.OO...
 ....O#...O
 .......OOO
 #...O###.O
-#.OOO#...O"#;
+#.OOO#...O";
 
     #[test]
-    fn part1_test() -> Result<(), String> {
+    fn part1_test() {
         let (round, cube) = get_rock_locations(PART1_INPUT);
         let (round_rolled, cube_rolled) = get_rock_locations(PART1_INPUT_ROLLED);
         let rolled = roll_rocks_north(&round, &cube);
@@ -295,12 +295,10 @@ O..#.OO...
         );
 
         assert_eq!(calculate_load_after_roll(PART1_INPUT), Ok(136));
-
-        Ok(())
     }
 
     #[test]
-    fn part2_test() -> Result<(), String> {
+    fn part2_test() {
         let (round, cube) = get_rock_locations(PART1_INPUT);
         let mut rolled = round;
         for input in [PART1_INPUT_CYCLE1, PART1_INPUT_CYCLE2, PART1_INPUT_CYCLE3] {
@@ -310,11 +308,9 @@ O..#.OO...
             assert_eq!(cube, cube_rolled);
             assert_eq!(
                 BTreeSet::from_iter(round_rolled),
-                BTreeSet::from_iter(rolled.iter().copied())
+                rolled.iter().copied().collect::<BTreeSet<_>>()
             );
         }
         assert_eq!(calculate_load_after_roll_cycle(PART1_INPUT), Ok(64));
-
-        Ok(())
     }
 }

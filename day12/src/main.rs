@@ -139,12 +139,12 @@ fn fit_arrangement<'a>(
 mod tests {
     use super::*;
 
-    const PART1_INPUT: &str = r#"???.### 1,1,3
+    const PART1_INPUT: &str = r"???.### 1,1,3
 .??..??...?##. 1,1,3
 ?#?#?#?#?#?#?#? 1,3,1,6
 ????.#...#... 4,1,1
 ????.######..#####. 1,6,5
-?###???????? 3,2,1"#;
+?###???????? 3,2,1";
 
     #[test]
     fn part1_test() {
@@ -160,11 +160,11 @@ mod tests {
 
     #[test]
     fn part2_test() {
-        let lines_res = [1, 16384, 1, 16, 2500, 506250];
+        let lines_res = [1, 16384, 1, 16, 2500, 506_250];
         for (line, res) in PART1_INPUT.lines().zip(lines_res) {
             assert_eq!(springs_row_arrangements(line, true), Ok(res));
         }
 
-        assert_eq!(springs_arrangements(PART1_INPUT, true), Ok(525152));
+        assert_eq!(springs_arrangements(PART1_INPUT, true), Ok(525_152));
     }
 }

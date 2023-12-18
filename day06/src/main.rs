@@ -78,8 +78,8 @@ fn ways_to_beat_race_records(input: &str, single_race: bool) -> Result<u64, Stri
 
 #[cfg(test)]
 mod tests {
-    const PART1_INPUT: &str = r#"Time:      7  15   30
-Distance:  9  40  200"#;
+    const PART1_INPUT: &str = r"Time:      7  15   30
+Distance:  9  40  200";
 
     #[test]
     fn part1_test() {
