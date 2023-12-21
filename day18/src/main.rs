@@ -80,7 +80,9 @@ fn trench_bounding_box(
     mut instructions: &[(Direction, isize)],
 ) -> Result<(RangeInclusive<isize>, RangeInclusive<isize>), String> {
     let trench = std::iter::successors(Some((0isize, 0isize)), |prev| {
-        if !instructions.is_empty() {
+        if instructions.is_empty() {
+            None
+        } else {
             let head = instructions[0];
             instructions = &instructions[1..];
             match head {
@@ -89,8 +91,6 @@ fn trench_bounding_box(
                 (Direction::Left, meters) => Some((prev.0 - meters, prev.1)),
                 (Direction::Up, meters) => Some((prev.0, prev.1 - meters)),
             }
-        } else {
-            None
         }
     })
     .collect::<Vec<_>>();
