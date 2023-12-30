@@ -76,7 +76,7 @@ fn make_into_graph(
     if next_junction.0 != end && !graph.contains_key(&next_junction.0) {
         let directions = collect_directions(trail, next_junction.0, end, &BTreeSet::new());
         for new_dir in directions {
-            make_into_graph(trail, next_junction.0, new_dir, end, graph)
+            make_into_graph(trail, next_junction.0, new_dir, end, graph);
         }
     }
 }
@@ -133,7 +133,7 @@ fn walk_trail(
     } else if path.insert(start) {
         graph.get(&start).and_then(|set| {
             set.iter()
-                .flat_map(|(next, steps_to_next)| {
+                .filter_map(|(next, steps_to_next)| {
                     walk_trail(graph, *next, end, path.clone()).map(|s| steps_to_next + s)
                 })
                 .max()

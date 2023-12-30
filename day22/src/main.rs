@@ -44,14 +44,18 @@ fn gravity_assisted_disintegration(input: &str) -> Result<usize, String> {
     let falling: usize = bricks_top_and_bottom
         .iter()
         .map(|(brick, (_below_brick, on_top_of_brick))| {
-            let mut queue = VecDeque::from_iter(on_top_of_brick.iter().copied().filter(|other| {
-                bricks_top_and_bottom
-                    .get(*other)
-                    .filter(|(bricks_on_bottom, _bricks_on_top)| bricks_on_bottom.len() == 1)
-                    .is_some()
-            }));
+            let mut queue = on_top_of_brick
+                .iter()
+                .copied()
+                .filter(|other| {
+                    bricks_top_and_bottom
+                        .get(*other)
+                        .filter(|(bricks_on_bottom, _bricks_on_top)| bricks_on_bottom.len() == 1)
+                        .is_some()
+                })
+                .collect::<VecDeque<_>>();
 
-            let mut falling = BTreeSet::from_iter(queue.iter().copied());
+            let mut falling = queue.iter().copied().collect::<BTreeSet<_>>();
             falling.insert(*brick);
 
             while let Some(cur) = queue.pop_front() {
@@ -131,7 +135,9 @@ fn mark_bricks_that_are_required_support(bricks: &BTreeSet<Brick>) -> BTreeSet<&
     bricks
         .iter()
         .filter_map(|brick| {
-            if !brick.on_ground() {
+            if brick.on_ground() {
+                None
+            } else {
                 let gravitated = brick.apply_gravity();
                 if let [single_detection] = bricks
                     .iter()
@@ -144,8 +150,6 @@ fn mark_bricks_that_are_required_support(bricks: &BTreeSet<Brick>) -> BTreeSet<&
                 } else {
                     None
                 }
-            } else {
-                None
             }
         })
         .collect()

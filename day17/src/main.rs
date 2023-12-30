@@ -48,11 +48,10 @@ fn path_of_least_heat_loss(input: &str, using_mega_crucible: bool) -> Result<u64
         .map(|line| {
             line.as_bytes()
                 .iter()
-                .map(|c| u64::try_from(c - b'0'))
-                .collect::<Result<Vec<u64>, _>>()
+                .map(|c| u64::from(c - b'0'))
+                .collect::<Vec<u64>>()
         })
-        .collect::<Result<Vec<_>, _>>()
-        .map_err(|err| err.to_string())?;
+        .collect::<Vec<_>>();
 
     let y_max = heat_loss_map.len();
     let x_max = heat_loss_map[0].len();

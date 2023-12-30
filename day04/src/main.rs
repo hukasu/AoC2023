@@ -4,13 +4,13 @@ use std::{collections::BTreeSet, io::Read};
 struct Card {
     id: usize,
     winning_numbers: BTreeSet<u32>,
-    card_numbers: Vec<u32>,
+    numbers: Vec<u32>,
 }
 
 impl Card {
     fn count_winning_numbers(&self) -> Result<u32, String> {
         u32::try_from(
-            self.card_numbers
+            self.numbers
                 .iter()
                 .filter(|number| self.winning_numbers.contains(number))
                 .count(),
@@ -109,7 +109,7 @@ fn read_card(card: &str) -> Result<Card, String> {
         Ok(Card {
             id,
             winning_numbers,
-            card_numbers,
+            numbers: card_numbers,
         })
     } else {
         Err("Could not get card id.".to_owned())

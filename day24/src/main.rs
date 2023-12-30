@@ -125,10 +125,10 @@ fn find_perfect_throw(hailstones: &[Hailstone], bounds: (f64, f64)) -> Result<Ha
 
 fn find_candidate_in_range(
     hailstones: &[Hailstone],
-    hailstone1: &Hailstone,
-    hailstone1_range: (f64, f64),
-    hailstone2: &Hailstone,
-    hailstone2_range: (f64, f64),
+    first_hailstone: &Hailstone,
+    first_hailstone_range: (f64, f64),
+    second_hailstone: &Hailstone,
+    second_hailstone_range: (f64, f64),
     bounds: (f64, f64),
 ) -> Result<Hailstone, String> {
     const POWER_OF_TEN_DECREASE: f64 = 3.;
@@ -138,7 +138,12 @@ fn find_candidate_in_range(
             (
                 llr,
                 rlr,
-                Hailstone::new_between_interpolated_hailstones(hailstone1, llr, hailstone2, rlr),
+                Hailstone::new_between_interpolated_hailstones(
+                    first_hailstone,
+                    llr,
+                    second_hailstone,
+                    rlr,
+                ),
             )
         })
         .filter(|(_, _, throw)| throw.in_bounds(bounds))
@@ -151,18 +156,18 @@ fn find_candidate_in_range(
     };
 
     let hailstone1_iter = {
-        let first_range_step_power = ((hailstone1_range.1 - hailstone1_range.0).log10()
+        let first_range_step_power = ((first_hailstone_range.1 - first_hailstone_range.0).log10()
             - POWER_OF_TEN_DECREASE)
             .max(0.) as u32;
-        ((hailstone1_range.0 as i64)..=(hailstone1_range.1 as i64))
+        ((first_hailstone_range.0 as i64)..=(first_hailstone_range.1 as i64))
             .step_by(10usize.pow(first_range_step_power))
             .map(|t| t as f64)
     };
     let hailstone2_iter = {
-        let last_range_step_power = ((hailstone2_range.1 - hailstone2_range.0).log10()
+        let last_range_step_power = ((second_hailstone_range.1 - second_hailstone_range.0).log10()
             - POWER_OF_TEN_DECREASE)
             .max(0.) as u32;
-        ((hailstone2_range.0 as i64)..=(hailstone2_range.1 as i64))
+        ((second_hailstone_range.0 as i64)..=(second_hailstone_range.1 as i64))
             .step_by(10usize.pow(last_range_step_power))
             .map(|t| t as f64)
     };
@@ -190,14 +195,16 @@ fn find_candidate_in_range(
             .into_iter(),
         ))?;
 
-        if candidate.0 < hailstone1_range.0
-            || candidate.0 > hailstone1_range.1
-            || candidate.1 < hailstone2_range.0
-            || candidate.1 > hailstone2_range.1
+        if candidate.0 < first_hailstone_range.0
+            || candidate.0 > first_hailstone_range.1
+            || candidate.1 < second_hailstone_range.0
+            || candidate.1 > second_hailstone_range.1
         {
             println!("Out of bounds.");
             break;
-        } else if range1 == candidate.0 && range2 == candidate.1 {
+        } else if (range1 - candidate.0).abs() < f64::EPSILON
+            && (range2 - candidate.1).abs() < f64::EPSILON
+        {
             if learning_rate > 1. {
                 learning_rate /= 10.;
             } else {
@@ -212,8 +219,12 @@ fn find_candidate_in_range(
         }
     }
 
-    let perfect_throw =
-        Hailstone::new_between_interpolated_hailstones(hailstone1, range1, hailstone2, range2);
+    let perfect_throw = Hailstone::new_between_interpolated_hailstones(
+        first_hailstone,
+        range1,
+        second_hailstone,
+        range2,
+    );
 
     Ok(perfect_throw.move_hailstone(-(range1.min(range2))))
 }
